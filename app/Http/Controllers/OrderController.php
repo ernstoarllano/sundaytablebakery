@@ -129,4 +129,21 @@ class OrderController extends Controller
             'order' => $order,
         ]);
     }
+
+    /**
+     * Quick update order status (for scanning)
+     */
+    public function quickUpdate(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,ready,picked_up',
+        ]);
+
+        $order->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('orders.show', $order)
+            ->with('success', 'Order status updated successfully!');
+    }
 }

@@ -25,6 +25,12 @@ export default function Show({ order }) {
         }
     };
 
+    const handleQuickUpdate = (status) => {
+        router.post(route('orders.quick-update', order.id), {
+            status: status,
+        });
+    };
+
     return (
         <AuthenticatedLayout
             header={
@@ -175,6 +181,41 @@ export default function Show({ order }) {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Quick Status Update */}
+                            {order.status !== 'picked_up' && (
+                                <div className="mt-6 rounded-lg border-2 border-blue-200 bg-blue-50 p-6">
+                                    <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide text-blue-900">
+                                        Quick Actions
+                                    </h4>
+                                    <div className="flex flex-wrap gap-3">
+                                        {order.status === 'pending' && (
+                                            <button
+                                                onClick={() => handleQuickUpdate('ready')}
+                                                className="flex-1 rounded-md bg-green-600 px-4 py-3 text-sm font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                                            >
+                                                ✓ Mark as Ready
+                                            </button>
+                                        )}
+                                        {(order.status === 'pending' || order.status === 'ready') && (
+                                            <button
+                                                onClick={() => handleQuickUpdate('picked_up')}
+                                                className="flex-1 rounded-md bg-gray-600 px-4 py-3 text-sm font-semibold text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                                            >
+                                                📦 Mark as Picked Up
+                                            </button>
+                                        )}
+                                        {order.status === 'ready' && (
+                                            <button
+                                                onClick={() => handleQuickUpdate('pending')}
+                                                className="flex-1 rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                                            >
+                                                ← Back to Pending
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Actions */}
                             <div className="mt-8 flex justify-end gap-4 border-t border-gray-200 pt-6">

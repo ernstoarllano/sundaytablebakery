@@ -26,6 +26,7 @@ Route::get('/track/{orderNumber}', [TrackingController::class, 'show'])->name('t
 Route::middleware('auth')->group(function () {
     Route::get('/orders/{order}/qrcode', [OrderController::class, 'qrcode'])->name('orders.qrcode');
     Route::get('/orders/{order}/ticket', [OrderController::class, 'ticket'])->name('orders.ticket');
+    Route::post('/orders/{order}/quick-update', [OrderController::class, 'quickUpdate'])->name('orders.quick-update');
     Route::resource('orders', OrderController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
