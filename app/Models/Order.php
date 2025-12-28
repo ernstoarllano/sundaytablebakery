@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
@@ -37,10 +38,13 @@ class Order extends Model
 
     public static function generateOrderNumber()
     {
-        $prefix = 'STB';
-        $date = now()->format('Ymd');
-        $random = strtoupper(substr(uniqid(), -4));
+        do {
+            $prefix = 'STB';
+            $date = now()->format('Ymd');
+            $random = strtoupper(Str::random(8));
+            $orderNumber = "{$prefix}-{$date}-{$random}";
+        } while (self::where('order_number', $orderNumber)->exists());
 
-        return "{$prefix}-{$date}-{$random}";
+        return $orderNumber;
     }
 }

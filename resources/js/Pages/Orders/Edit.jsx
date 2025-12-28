@@ -6,13 +6,20 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Edit({ order }) {
+    // Format date for HTML date input (YYYY-MM-DD)
+    const formatDateForInput = (date) => {
+        if (!date) return '';
+        const d = new Date(date);
+        return d.toISOString().split('T')[0];
+    };
+
     const { data, setData, put, processing, errors } = useForm({
         customer_name: order.customer_name || '',
         customer_email: order.customer_email || '',
         customer_phone: order.customer_phone || '',
         product_type: order.product_type || 'Sourdough Loaf',
         quantity: order.quantity || 1,
-        pickup_date: order.pickup_date || '',
+        pickup_date: formatDateForInput(order.pickup_date),
         pickup_time: order.pickup_time ? order.pickup_time.substring(0, 5) : '',
         status: order.status || 'pending',
         notes: order.notes || '',

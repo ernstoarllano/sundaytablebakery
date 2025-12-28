@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class OrderController extends Controller
 {
@@ -104,5 +105,28 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index')
             ->with('success', 'Order deleted successfully!');
+    }
+
+    /**
+     * Generate QR code for the order
+     */
+    public function qrcode(Order $order)
+    {
+        $qrCode = QrCode::format('svg')
+            ->size(300)
+            ->generate(route('tracking.show', $order->order_number));
+
+        return response($qrCode)
+            ->header('Content-Type', 'image/svg+xml');
+    }
+
+    /**
+     * Show printable ticket for the order
+     */
+    public function ticket(Order $order)
+    {
+        return Inertia::render('Orders/Ticket', [
+            'order' => $order,
+        ]);
     }
 }

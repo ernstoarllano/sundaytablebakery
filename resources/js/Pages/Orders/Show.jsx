@@ -142,6 +142,40 @@ export default function Show({ order }) {
                                 </div>
                             )}
 
+                            {/* QR Code */}
+                            <div className="mt-6 rounded-lg border border-gray-200 p-4">
+                                <h4 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                                    Order QR Code
+                                </h4>
+                                <div className="flex flex-col items-center gap-4">
+                                    <div className="rounded-lg border-2 border-gray-300 p-4 bg-white">
+                                        <img
+                                            src={route('orders.qrcode', order.id)}
+                                            alt={`QR Code for order ${order.order_number}`}
+                                            className="w-48 h-48"
+                                        />
+                                    </div>
+                                    <p className="text-sm text-gray-600 text-center">
+                                        Scan this QR code to view order details
+                                    </p>
+                                    <div className="flex gap-2">
+                                        <a
+                                            href={route('orders.qrcode', order.id)}
+                                            download={`${order.order_number}-qrcode.svg`}
+                                            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                        >
+                                            Download QR Code
+                                        </a>
+                                        <Link
+                                            href={route('orders.ticket', order.id)}
+                                            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                        >
+                                            Print Ticket
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Actions */}
                             <div className="mt-8 flex justify-end gap-4 border-t border-gray-200 pt-6">
                                 <button
