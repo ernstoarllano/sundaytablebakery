@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderCreated;
+use App\Mail\OrderReady;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -48,6 +51,9 @@ class OrderController extends Controller
         ]);
 
         $order = Order::create($validated);
+
+        // Send confirmation email
+        Mail::to($order->customer_email)->send(new OrderCreated($order));
 
         return redirect()->route('orders.show', $order)
             ->with('success', 'Order created successfully!');
@@ -139,9 +145,16 @@ class OrderController extends Controller
             'status' => 'required|in:pending,ready,picked_up',
         ]);
 
+        $oldStatus = $order->status;
+
         $order->update([
             'status' => $request->status,
         ]);
+
+        // Send email notification when order becomes ready
+        if ($oldStatus !== 'ready' && $request->status === 'ready') {
+            Mail::to($order->customer_email)->send(new OrderReady($order));
+        }
 
         return redirect()->route('orders.show', $order)
             ->with('success', 'Order status updated successfully!');
