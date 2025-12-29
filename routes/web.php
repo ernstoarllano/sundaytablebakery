@@ -3,6 +3,7 @@
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrackingController;
+use App\Models\Order;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,7 +18,29 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $totalOrders = Order::count();
+    $newOrdersToday = Order::whereDate('created_at', today())->count();
+
+    $totalCustomers = Order::distinct('customer_email')->count('customer_email');
+    $newCustomersToday = Order::whereDate('created_at', today())
+        ->distinct('customer_email')
+        ->count('customer_email');
+
+    $ordersByStatus = [
+        'pending' => Order::where('status', 'pending')->count(),
+        'ready' => Order::where('status', 'ready')->count(),
+        'picked_up' => Order::where('status', 'picked_up')->count(),
+    ];
+
+    return Inertia::render('Dashboard', [
+        'analytics' => [
+            'totalOrders' => $totalOrders,
+            'newOrdersToday' => $newOrdersToday,
+            'totalCustomers' => $totalCustomers,
+            'newCustomersToday' => $newCustomersToday,
+            'ordersByStatus' => $ordersByStatus,
+        ],
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Public order tracking (no auth required)
