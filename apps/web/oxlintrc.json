@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "react": "warn",
+    "typescript": "warn",
+    "jsx-a11y": "warn"
+  }
+}
