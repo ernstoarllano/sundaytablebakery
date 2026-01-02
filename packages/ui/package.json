@@ -1,0 +1,30 @@
+{
+  "name": "@sundaytablebakery/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./input": "./src/input.tsx",
+    "./select": "./src/select.tsx",
+    "./button": "./src/button.tsx",
+    "./field": "./src/field.tsx",
+    "./textarea": "./src/textarea.tsx"
+  },
+  "scripts": {
+    "lint": "oxlint .",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.0.0",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@sundaytablebakery/typescript-config": "workspace:*",
+    "@types/react": "^19.0.2",
+    "oxlint": "^0.15.6",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
+}

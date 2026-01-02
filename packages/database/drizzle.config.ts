@@ -1,6 +1,11 @@
 import { defineConfig } from "drizzle-kit";
 import { config } from "dotenv";
-import { resolve } from "path";
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
+
+// ESM dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Load .env from the root of the monorepo
 config({ path: resolve(__dirname, "../../.env") });

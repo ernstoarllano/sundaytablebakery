@@ -17,7 +17,8 @@
     "docker:logs": "docker compose logs -f db",
     "db:generate": "cd packages/database && bun run db:generate",
     "db:push": "cd packages/database && bun run db:push",
-    "db:studio": "cd packages/database && bun run db:studio"
+    "db:studio": "cd packages/database && bun run db:studio",
+    "db:seed": "cd packages/database && bun run db:seed"
   },
   "devDependencies": {
     "turbo": "^2.3.3"
